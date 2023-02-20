@@ -1,54 +1,49 @@
-
-const ContactsRepository = require('../repositories/ContactRepositories')
+const ContactsRepository = require("../repositories/ContactRepositories");
 
 class ContactController {
+  async index(req, res) {
+    const contacts = await ContactsRepository.findAll();
+    res.json(contacts);
+  }
 
-   async index(req, res) {
-        const contacts = await ContactsRepository.findAll();
-        res.json(contacts)
+  async show(req, res) {
+    //Get one
+
+    const { id } = req.params;
+
+    const contact = await ContactsRepository.findById(id);
+
+    if (!contact) {
+      return res.status(404).json({ error: "Error not found" });
     }
 
-    async show(req,res) {
-        //Get one
-        
-        const { id } = req.params
+    res.json(contact);
+  }
 
-        const contact = await ContactsRepository.findById(id)
+  store(req, res) {
+    //Create new
+    res.send(req.body)
+  }
 
-        if (!contact) {
-            return res.status(404).json({error: "Error not found"})
-        }
+  update() {
+    //Edit
+  }
 
-        res.json(contact)
+  async delete(req, res) {
+    //Delete
 
+    const { id } = req.params;
+    const contact = await ContactsRepository.findById(id);
 
+    if (!contact) {
+      return res.status(404).json({ error: "Error not found" });
     }
 
-    store() {
-        //Create new
-    }
+    await ContactsRepository.delete(id);
 
-    update() {
-        //Edit 
-    }
-
-    async delete(req, res) {
-        //Delete
-
-        const { id } = req.params
-        const contact = await ContactsRepository.findById(id)
-
-         if (!contact) {
-            return res.status(404).json({error: "Error not found"})
-        }
-
-        await ContactsRepository.delete(id)
-
-        //204: No content
-        res.sendStatus(204)
-
-
-    }
+    //204: No content
+    res.sendStatus(204);
+  }
 }
 
-module.exports = new ContactController()
+module.exports = new ContactController();
