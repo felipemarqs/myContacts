@@ -52,17 +52,35 @@ class ContactRepositories {
 
   create({ name, email, phone, category_id }) {
     return new Promise((resolve, reject) => {
-        const newContact = {
-            id: v4(),
-            name,
-            email,
-            phone,
-            category_id,
-          };
-      
-          contacts.push(newContact);
-          resolve(newContact);
-    })
+      const newContact = {
+        id: v4(),
+        name,
+        email,
+        phone,
+        category_id,
+      };
+
+      contacts.push(newContact);
+      resolve(newContact);
+    });
+  }
+
+  update(id, { name, email, phone, category_id }) {
+    return new Promise((resolve, reject) => {
+      const updatedContact = {
+        id,
+        name,
+        email,
+        phone,
+        category_id,
+      };
+
+      contacts = contacts.map((contact) =>
+        contact.id === id ? updatedContact : contact
+      );
+
+      resolve(updatedContact)
+    });
   }
 }
 
