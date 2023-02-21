@@ -2,8 +2,7 @@ const ContactsRepository = require("../repositories/ContactRepositories");
 
 class ContactController {
   async index(req, res) {
-
-    const {orderBy} = req.query
+    const { orderBy } = req.query;
     const contacts = await ContactsRepository.findAll(orderBy);
     //teste
     res.json(contacts);
@@ -59,18 +58,14 @@ class ContactController {
       return res.status(404).json({ error: "Error not found" });
     }
 
-    
     if (!name) {
-        return res.status(404).json({ error: "Name and email is required!" });
+      return res.status(404).json({ error: "Name and email is required!" });
     }
 
     if (!email) {
-        return res.status(404).json({ error: "Email and email is required!" });
+      return res.status(404).json({ error: "Email and email is required!" });
     }
 
-
-
-    
     const emailExists = await ContactsRepository.findByEmail(email);
 
     if (emailExists && emailExists.id !== id) {
@@ -78,8 +73,11 @@ class ContactController {
     }
 
     const contact = await ContactsRepository.update(id, {
-        name, email, phone, category_id
-    })
+      name,
+      email,
+      phone,
+      category_id,
+    });
 
     res.json(contact);
   }
@@ -88,7 +86,7 @@ class ContactController {
     //Delete
 
     const { id } = req.params;
-  
+
     await ContactsRepository.delete(id);
 
     //204: No content

@@ -33,4 +33,13 @@ CREATE TABLE IF NOT EXISTS contacts (
 
 INSERT INTO contact (name, email, phone, category_id) VALUES
 
+UPDATE contacts 
+      SET name = $1, email = $2, phone = $3, category_id = $4
+      WHERE id = $5
+      RETURNING *
+    `, [name, email, phone, category_id , id])
+
+    
+'DELETE FROM contacts WHERE id = $1', [id]
+
 
