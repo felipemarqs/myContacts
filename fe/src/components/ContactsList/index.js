@@ -1,28 +1,92 @@
-import { Container, Header, ListContainer, ListBody } from "./styles"
+//Styled Components
 
-import arrow from '../../assets/icons/arrow.svg'
+import { Container, Header, ListContainer, Card } from "./styles";
+
+//Icons
+import editIcon from "../../assets/icons/editIcon.svg";
+import deleteIcon from "../../assets/icons/deleteIcon.svg";
+import arrow from "../../assets/icons/arrow.svg";
+
 const ContactsList = () => {
-    return (
-        <Container>
-            <Header>
+  return (
+    <Container>
+      <Header>
+        <strong>3 Contatos</strong>
+        <a href="#">Novo Contato</a>
+      </Header>
 
-                <strong>3 Contatos</strong>
-                <a href="#">Novo Contato</a>
-            </Header>
+      <ListContainer>
+        <header>
+          <button type="button">
+            <span>Nome</span>
+            <img src={arrow} />
+          </button>
+        </header>
+        <Card>
+          <div className="info">
+            <div className="contact-name">
+              <strong>Felipe Marques</strong>
+              <small>Instagram</small>
+            </div>
 
-            <ListContainer>
-                <header>
-                    <button type="button">
-                        <span>Nome</span>
-                        <img src={arrow} />
-                    </button>
-                </header>
-                <ListBody>
+            <span>felipe@felipe.com</span>
+            <span>(71) 91222-2222</span>
+          </div>
 
-                </ListBody>
-            </ListContainer>
-        </Container>
-    )
-}
+          <div className="actions">
+            <a href="">
+              <img src={editIcon} alt="Edit" />
+            </a>
+            <button>
+              <img src={deleteIcon} alt="Delete" />
+            </button>
+          </div>
+        </Card>
 
-export default ContactsList
+        <Card>
+          <div className="info">
+            <div className="contact-name">
+              <strong>Felipe Marques</strong>
+              <small>Instagram</small>
+            </div>
+
+            <span>felipe@felipe.com</span>
+            <span>(71) 91222-2222</span>
+          </div>
+
+          <div className="actions">
+            <a href="">
+              <img src={editIcon} alt="Edit" />
+            </a>
+            <button>
+              <img src={deleteIcon} alt="Delete" />
+            </button>
+          </div>
+        </Card>
+
+        <Card>
+          <div className="info">
+            <div className="contact-name">
+              <strong>Felipe Marques</strong>
+              <small>Instagram</small>
+            </div>
+
+            <span>felipe@felipe.com</span>
+            <span>(71) 91222-2222</span>
+          </div>
+
+          <div className="actions">
+            <a href="">
+              <img src={editIcon} alt="Edit" />
+            </a>
+            <button>
+              <img src={deleteIcon} alt="Delete" />
+            </button>
+          </div>
+        </Card>
+      </ListContainer>
+    </Container>
+  );
+};
+
+export default ContactsList;
