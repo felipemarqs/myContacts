@@ -1,15 +1,13 @@
-import { Container, InputSearchContainer } from "./styles"
+import { Container } from "./styles";
 
-import logo from '../../assets/images/logo.svg'
+import logo from "../../assets/images/logo.svg";
 
 const Header = () => {
-    return (
-        <Container>
-            <img src={logo} />
-            <InputSearchContainer>
-                <input type='text' placeholder="Pesquisar contato..." />
-            </InputSearchContainer>
-        </Container>)
-}
+  return (
+    <Container>
+      <img src={logo} />
+    </Container>
+  );
+};
 
-export default Header
+export default Header;

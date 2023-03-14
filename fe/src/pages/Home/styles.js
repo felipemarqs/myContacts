@@ -1,5 +1,25 @@
 import styled from "styled-components";
 
+export const InputSearchContainer = styled.form`
+  width: 100%;
+
+  input {
+    width: 100%;
+    background: #fff;
+    border: none;
+    border-radius: 25px;
+    margin-top: 50px;
+    height: 50px;
+    box-shadow: 8px 4px 10px rgba(0, 0, 0, 0.14);
+    outline: 0;
+    padding: 0 16px;
+
+    &::placeholder {
+      color: #bcbcbc;
+    }
+  }
+`;
+
 export const Container = styled.div`
   margin-top: 32px;
 `;
@@ -9,7 +29,7 @@ export const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
-
+  margin-top: 32px;
   strong {
     color: ${({ theme }) => theme.colors.gray[500]};
     font-size: 24px;
@@ -62,7 +82,6 @@ export const Card = styled.div`
   & + & {
     margin-top: 16px;
   }
-
 
   .info {
     .contact-name {

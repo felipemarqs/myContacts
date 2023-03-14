@@ -1,15 +1,23 @@
-//Styled Components
-
-import { Container, Header, ListContainer, Card } from "./styles";
+import {
+  Container,
+  Header,
+  ListContainer,
+  Card,
+  InputSearchContainer,
+} from "./styles";
 
 //Icons
 import editIcon from "../../assets/icons/editIcon.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import arrow from "../../assets/icons/arrow.svg";
 
-const ContactsList = () => {
+const Home = () => {
   return (
     <Container>
+      <InputSearchContainer>
+        <input type="text" placeholder="Pesquisar contato..." />
+      </InputSearchContainer>
+
       <Header>
         <strong>3 Contatos</strong>
         <a href="#">Novo Contato</a>
@@ -89,4 +97,4 @@ const ContactsList = () => {
   );
 };
 
-export default ContactsList;
+export default Home;
