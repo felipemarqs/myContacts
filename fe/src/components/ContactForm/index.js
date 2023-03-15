@@ -14,7 +14,7 @@ const ContactForm = ({ buttonLabel }) => {
             <FormGroup
                 error="O formato do E-mail é inválido!"
             >
-                <Input placeholder="Email" />
+                <Input placeholder="Email" error />
             </FormGroup>
             <FormGroup>
                 <Input placeholder="Telefone" />
