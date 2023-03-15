@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export default styled.button`
-    width: 100%;
+    /* width: 100%; */
     height: 52px;
+    padding: 0 16px;
     border: none;
     background: ${({ theme }) => theme.colors.primary[500]};
     font-size: 16px;
