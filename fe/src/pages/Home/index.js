@@ -12,12 +12,14 @@ import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import arrow from "../../assets/icons/arrow.svg";
 import { Link } from "react-router-dom";
 import Modal from "../../components/Modal";
+import Loader from "../../components/Loader";
 
 const Home = () => {
   return (
 
     <Container>
-      <Modal danger />
+      {/*  <Modal danger /> */}
+      {/* <Loader /> */}
       <InputSearchContainer>
         <input type="text" placeholder="Pesquisar contato..." />
       </InputSearchContainer>

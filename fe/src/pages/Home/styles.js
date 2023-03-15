@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const InputSearchContainer = styled.form`
   width: 100%;
-
+ 
   input {
     width: 100%;
     background: #fff;
@@ -22,6 +22,7 @@ export const InputSearchContainer = styled.form`
 
 export const Container = styled.div`
   margin-top: 32px;
+
 `;
 
 export const Header = styled.header`
