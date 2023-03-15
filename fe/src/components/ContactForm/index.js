@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import FormGroup from "../FormGroup"
 import Input from "../Input/input"
 import Select from "../Select/Select"
@@ -6,10 +8,18 @@ import { Form, ButtonContainer } from "./styles"
 
 
 const ContactForm = ({ buttonLabel }) => {
+
+    const [name, setName] = useState('')
+
     return (
         <Form>
             <FormGroup>
-                <Input placeholder="Nome" />
+                <Input
+                    value={name}
+                    placeholder="Nome"
+                    onChange={(event) => setName(event.target.value)}
+
+                />
             </FormGroup>
             <FormGroup
                 error="O formato do E-mail é inválido!"
