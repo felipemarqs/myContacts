@@ -8,7 +8,7 @@ export default styled.button`
     font-size: 16px;
     font-weight: bold;
     color: #fff;
-    box-shadow: 8px 4px 18px rgba(0,0,0, 0.4);
+    box-shadow: 8px 4px 18px rgba(0,0,0, 0.14);
     border-radius: 4px;
     transition: background 0.2s ease-in;
 
