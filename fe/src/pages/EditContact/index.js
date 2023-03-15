@@ -1,7 +1,9 @@
+import PageHeader from "../../components/PageHeader"
+
 const EditContact = () => {
     return (
         <>
-            Edit Contact Page
+            <PageHeader title="Edite o contato" />
         </>
     )
 }

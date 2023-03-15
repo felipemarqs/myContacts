@@ -10,6 +10,7 @@ import {
 import editIcon from "../../assets/icons/editIcon.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import arrow from "../../assets/icons/arrow.svg";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -20,14 +21,14 @@ const Home = () => {
 
       <Header>
         <strong>3 Contatos</strong>
-        <a href="#">Novo Contato</a>
+        <Link to="/new">Novo Contato</Link>
       </Header>
 
       <ListContainer>
         <header>
           <button type="button">
             <span>Nome</span>
-            <img src={arrow} />
+            <img src={arrow} alt="Sort" />
           </button>
         </header>
         <Card>
@@ -42,9 +43,9 @@ const Home = () => {
           </div>
 
           <div className="actions">
-            <a href="">
+            <Link to="/edit/123">
               <img src={editIcon} alt="Edit" />
-            </a>
+            </Link>
             <button>
               <img src={deleteIcon} alt="Delete" />
             </button>
