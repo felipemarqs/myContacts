@@ -17,7 +17,7 @@ const Home = () => {
   return (
 
     <Container>
-      <Modal />
+      <Modal danger />
       <InputSearchContainer>
         <input type="text" placeholder="Pesquisar contato..." />
       </InputSearchContainer>

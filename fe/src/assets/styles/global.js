@@ -12,7 +12,7 @@ export default createGlobalStyle`
     body {
         background: ${({ theme }) => theme.colors.background};
         font-size: 16px;
-        ${({ theme }) => theme.colors.gray[500]};
+        color: ${({ theme }) => theme.colors.gray[500]};
     }
 
     button {
