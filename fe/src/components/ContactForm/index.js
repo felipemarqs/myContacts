@@ -11,12 +11,20 @@ import { Form, ButtonContainer } from "./styles";
 //Utils
 import isEmailValid from "../../utils/isEmailValid";
 
+
+
 const ContactForm = ({ buttonLabel }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [category, setCategory] = useState("");
     const [errors, setErrors] = useState([])
+
+    const getErrorMessageByFildName = (fieldName) => {
+        return errors.find((error) => error.field === fieldName)?.message
+    }
+
+    console.log()
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -64,19 +72,20 @@ const ContactForm = ({ buttonLabel }) => {
     console.log(errors)
     return (
         <Form onSubmit={handleSubmit}>
-            <FormGroup>
+            <FormGroup error={getErrorMessageByFildName('name')}>
                 <Input
+                    error={getErrorMessageByFildName('name')}
                     value={name}
                     placeholder="Nome"
                     onChange={handleNameChange}
                 />
             </FormGroup>
 
-            <FormGroup error="O formato do E-mail é inválido!">
+            <FormGroup error={getErrorMessageByFildName('email')}>
                 <Input
                     value={email}
                     placeholder="Email"
-                    error
+                    error={getErrorMessageByFildName('email')}
                     onChange={handleEmailChange}
                 />
             </FormGroup>
