@@ -11,8 +11,8 @@ import editIcon from "../../assets/icons/editIcon.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import arrow from "../../assets/icons/arrow.svg";
 import { Link } from "react-router-dom";
-import Modal from "../../components/Modal";
-import Loader from "../../components/Loader";
+/* import Modal from "../../components/Modal";
+import Loader from "../../components/Loader"; */
 
 const Home = () => {
   return (
@@ -69,9 +69,9 @@ const Home = () => {
           </div>
 
           <div className="actions">
-            <a href="">
+            <Link to="/">
               <img src={editIcon} alt="Edit" />
-            </a>
+            </Link>
             <button>
               <img src={deleteIcon} alt="Delete" />
             </button>
@@ -90,9 +90,9 @@ const Home = () => {
           </div>
 
           <div className="actions">
-            <a href="">
+            <Link to="/">
               <img src={editIcon} alt="Edit" />
-            </a>
+            </Link>
             <button>
               <img src={deleteIcon} alt="Delete" />
             </button>

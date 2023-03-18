@@ -8,112 +8,107 @@ import Select from "../Select/Select";
 import Button from "../Button/Button";
 import { Form, ButtonContainer } from "./styles";
 
+//Hooks
+import useErrors from "../../hooks/useErrors";
+
 //Utils
 import isEmailValid from "../../utils/isEmailValid";
-
-
+import formatPhone from "../../utils/formatPhone";
 
 const ContactForm = ({ buttonLabel }) => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [category, setCategory] = useState("");
-    const [errors, setErrors] = useState([])
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [category, setCategory] = useState("");
 
-    const getErrorMessageByFildName = (fieldName) => {
-        return errors.find((error) => error.field === fieldName)?.message
+  const { setError, removeError, getErrorMessageByFildName, errors } =
+    useErrors();
+
+  const isFormValid = (name , errors.length === 0);
+
+  console.log();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log({
+      name,
+      email,
+      phone,
+      category,
+    });
+  };
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+
+    if (!event.target.value) {
+      setError({ fieldName: "name", message: "Nome é obrigatório" });
+    } else {
+      removeError("name");
     }
+  };
 
-    console.log()
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log({
-            name, email, phone, category
-        })
+    if (event.target.value && !isEmailValid(event.target.value)) {
+      setError({ fieldName: "email", message: "Email inválido!" });
+    } else {
+      removeError("email");
     }
+  };
 
-    const handleNameChange = (event) => {
-        setName(event.target.value)
+  const handlePhoneChange = (event) => {
+    setPhone(formatPhone(event.target.value));
+  };
 
-        if (!event.target.value) {
-            setErrors((prevState) => [
-                ...prevState,
-                { field: "name", message: "Nome é obrigatório!" }
-            ])
-        } else {
-            setErrors((prevState) => prevState.filter(
-                (error) => error.field !== "name"
-            ))
-        }
-    }
+  return (
+    <Form onSubmit={handleSubmit} noValidate>
+      <FormGroup error={getErrorMessageByFildName("name")}>
+        <Input
+          error={getErrorMessageByFildName("name")}
+          value={name}
+          placeholder="Nome"
+          onChange={handleNameChange}
+        />
+      </FormGroup>
 
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value)
+      <FormGroup error={getErrorMessageByFildName("email")}>
+        <Input
+          type="email"
+          value={email}
+          placeholder="Email"
+          error={getErrorMessageByFildName("email")}
+          onChange={handleEmailChange}
+        />
+      </FormGroup>
 
-        if (event.target.value && !isEmailValid(event.target.value)) {
-            const errorAlreadyExists = errors.find((error) => error.field === 'email')
+      <FormGroup>
+        <Input
+          value={phone}
+          maxLength="15"
+          placeholder="Telefone"
+          onChange={handlePhoneChange}
+        />
+      </FormGroup>
 
-            if (errorAlreadyExists) {
-                return;
-            }
-            setErrors((prevState) => [
-                ...prevState,
-                { field: "email", message: "Email inválido!" }
-            ])
-        } else {
-            setErrors((prevState) => prevState.filter(
-                (error) => error.field !== "email"
-            ))
+      <FormGroup>
+        <Select
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+        >
+          <option value="">Categoria</option>
+          <option value="Instagram">Instagram</option>
+          <option value="discord">Discord</option>
+        </Select>
+      </FormGroup>
 
-        }
-    }
-
-    console.log(errors)
-    return (
-        <Form onSubmit={handleSubmit}>
-            <FormGroup error={getErrorMessageByFildName('name')}>
-                <Input
-                    error={getErrorMessageByFildName('name')}
-                    value={name}
-                    placeholder="Nome"
-                    onChange={handleNameChange}
-                />
-            </FormGroup>
-
-            <FormGroup error={getErrorMessageByFildName('email')}>
-                <Input
-                    value={email}
-                    placeholder="Email"
-                    error={getErrorMessageByFildName('email')}
-                    onChange={handleEmailChange}
-                />
-            </FormGroup>
-
-            <FormGroup>
-                <Input
-                    value={phone}
-                    placeholder="Telefone"
-                    onChange={(event) => setPhone(event.target.value)}
-                />
-            </FormGroup>
-
-            <FormGroup>
-                <Select
-                    value={category}
-                    onChange={(event) => setCategory(event.target.value)}
-                >
-
-                    <option value="">Categoria</option>
-                    <option value="Instagram">Instagram</option>
-                    <option value="discord">Discord</option>
-                </Select>
-            </FormGroup>
-
-            <ButtonContainer>
-                <Button type="submit">{buttonLabel}</Button>
-            </ButtonContainer>
-        </Form>
-    );
+      <ButtonContainer>
+        <Button type="submit" disabled={!isFormValid}>
+          {buttonLabel}
+        </Button>
+      </ButtonContainer>
+    </Form>
+  );
 };
 export default ContactForm;
