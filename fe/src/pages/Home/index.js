@@ -103,4 +103,13 @@ const Home = () => {
   );
 };
 
+fetch('http://localhost:3000/')
+  .then((response) => { 
+    console.log("Response:", response)
+  })
+  .catch((error) => {
+    console.error("Error:",error);
+  })
+
+
 export default Home;
