@@ -16,7 +16,6 @@ import Loader from "../../components/Loader"; */
 
 const Home = () => {
   return (
-
     <Container>
       {/*  <Modal danger /> */}
       {/* <Loader /> */}
@@ -103,13 +102,12 @@ const Home = () => {
   );
 };
 
-fetch('http://localhost:3000/')
-  .then((response) => { 
-    console.log("Response:", response)
+fetch("http://localhost:3001/categories")
+  .then((response) => {
+    console.log("Response:", response);
   })
   .catch((error) => {
-    console.error("Error:",error);
-  })
-
+    console.error("Error:", error);
+  });
 
 export default Home;
