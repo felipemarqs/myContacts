@@ -103,8 +103,9 @@ const Home = () => {
 };
 
 fetch("http://localhost:3001/categories")
-  .then((response) => {
-    console.log("Response:", response);
+  .then(async (response) => {
+    const json = await response.json();
+    console.log("Response:", json);
   })
   .catch((error) => {
     console.error("Error:", error);
