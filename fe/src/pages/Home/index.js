@@ -1,3 +1,5 @@
+import { useEffect, useState} from 'react';
+
 import {
   Container,
   Header,
@@ -15,6 +17,21 @@ import { Link } from "react-router-dom";
 import Loader from "../../components/Loader"; */
 
 const Home = () => {
+
+  const [contacts, setContacts] = useState([])
+
+
+  useEffect(() => {
+    fetch("http://localhost:3001/contacts")
+      .then(async (response) => {
+        const json = await response.json();
+        setContacts(json);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, [])
+
   return (
     <Container>
       {/*  <Modal danger /> */}
@@ -24,7 +41,9 @@ const Home = () => {
       </InputSearchContainer>
 
       <Header>
-        <strong>3 Contatos</strong>
+        <strong>{contacts.length}
+                {contacts.length > 1 ? ' contatos' : 'contato'}
+        </strong>
         <Link to="/new">Novo Contato</Link>
       </Header>
 
@@ -102,13 +121,6 @@ const Home = () => {
   );
 };
 
-fetch("http://localhost:3001/categories")
-  .then(async (response) => {
-    const json = await response.json();
-    console.log("Response:", json);
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-  });
+
 
 export default Home;
