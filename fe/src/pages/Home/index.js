@@ -21,10 +21,17 @@ const Home = () => {
   //States
   const [contacts, setContacts] = useState([])
   const [orderBy, setOrderBy] = useState('asc')
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const filteredContacts = contacts.filter((contact) => (
+    contact.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())
+  ))
+
+  console.log("Filtered Contacts ", filteredContacts)
 
   //Effects
   useEffect(() => {
-    fetch("http://localhost:3001/contacts")
+    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
       .then(async (response) => {
         const json = await response.json();
         setContacts(json);
@@ -32,12 +39,18 @@ const Home = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [])
+  }, [orderBy])
 
   //Functions
   const handleToggleOrderBy = () => {
     setOrderBy((prevState) => prevState === 'asc' ? 'desc' : 'asc')
   }
+
+  const handleChangeSearchTerm = (event) => {
+    setSearchTerm(event.target.value)
+  }
+
+
 
 
   return (
@@ -45,24 +58,30 @@ const Home = () => {
       {/*  <Modal danger /> */}
       {/* <Loader /> */}
       <InputSearchContainer>
-        <input type="text" placeholder="Pesquisar contato..." />
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleChangeSearchTerm}
+          placeholder="Pesquisar contato..." />
       </InputSearchContainer>
 
       <Header>
-        <strong>{contacts.length}
-          {contacts.length > 1 ? ' contatos' : 'contato'}
+        <strong>{filteredContacts.length}
+          {filteredContacts.length === 1 ? ' contato' : ' contatos'}
         </strong>
         <Link to="/new">Novo Contato</Link>
       </Header>
 
-      <ListHeader>
-        <button type="button" onClick={handleToggleOrderBy}>
-          <span>Nome</span>
-          <img src={arrow} alt="Sort" />
-        </button>
-      </ListHeader>
+      {filteredContacts.length > 0 &&
 
-      {contacts.map(({ id, name, email, phone, category_name }) => (
+        <ListHeader orderBy={orderBy}>
+          <button type="button" onClick={handleToggleOrderBy}>
+            <span>Nome</span>
+            <img src={arrow} alt="Sort" />
+          </button>
+        </ListHeader>}
+
+      {filteredContacts.map(({ id, name, email, phone, category_name }) => (
 
         <Card key={id}>
           <div className="info">
