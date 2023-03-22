@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 import {
   Container,
@@ -23,11 +23,13 @@ const Home = () => {
   const [orderBy, setOrderBy] = useState('asc')
   const [searchTerm, setSearchTerm] = useState('')
 
-  const filteredContacts = contacts.filter((contact) => (
-    contact.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())
+  const filteredContacts = useMemo(() => contacts.filter((contact) => (
+    contact.name.toLocaleLowerCase()
+      .includes(searchTerm.toLocaleLowerCase())
   ))
+    , [searchTerm, contacts])
 
-  console.log("Filtered Contacts ", filteredContacts)
+
 
   //Effects
   useEffect(() => {
@@ -49,9 +51,6 @@ const Home = () => {
   const handleChangeSearchTerm = (event) => {
     setSearchTerm(event.target.value)
   }
-
-
-
 
   return (
     <Container>
