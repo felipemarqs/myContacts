@@ -52,10 +52,10 @@ export const Header = styled.header`
   }
 `;
 
-export const ListContainer = styled.div`
+export const ListHeader = styled.header`
   margin-top: 24px;
 
-  header {
+
     button {
       background: transparent;
       border: none;
@@ -68,7 +68,7 @@ export const ListContainer = styled.div`
       font-weight: bold;
       color: ${({ theme }) => theme.colors.primary[500]};
     }
-  }
+  
 `;
 
 export const Card = styled.div`
@@ -80,7 +80,7 @@ export const Card = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  & + & {
+   & {
     margin-top: 16px;
   }
 
