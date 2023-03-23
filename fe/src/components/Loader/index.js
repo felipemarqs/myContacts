@@ -1,7 +1,11 @@
 import ReactDOM from "react-dom"
 
 import { Overlay } from "./styles"
-const Loader = () => {
+const Loader = ({ isLoading }) => {
+
+    if (!isLoading) {
+        return null
+    }
 
     return ReactDOM.createPortal(
         <>
