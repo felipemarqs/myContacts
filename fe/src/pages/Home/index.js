@@ -17,6 +17,9 @@ import { Link } from "react-router-dom";
 //import Modal from "../../components/Modal";
 import Loader from "../../components/Loader";
 
+// Services
+import ContactsService from '../../services/ContactsService';
+
 const Home = () => {
 
   //States
@@ -35,20 +38,22 @@ const Home = () => {
 
   //Effects
   useEffect(() => {
-    setIsLoading(true)
 
-    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
-      .then(async (response) => {
-        //await delay(10);
-        const json = await response.json();
-        setContacts(json);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      })
-      .finally(() => {
+    const loadContacts = async () => {
+
+      try {
+        setIsLoading(true)
+        const listContacts = await ContactsService.listContacts(orderBy)
+        setContacts(listContacts)
+      } catch (error) {
+        console.log('error', error)
+      } finally {
         setIsLoading(false)
-      })
+      }
+    }
+
+    loadContacts();
+
 
   }, [orderBy])
 
