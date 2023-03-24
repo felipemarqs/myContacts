@@ -1,3 +1,5 @@
+import { delay } from '../../utils/delay'
+
 class HttpClient {
 
     constructor(baseURL) {
@@ -5,10 +7,18 @@ class HttpClient {
     }
 
     async get(path) {
-        const response = await fetch(`${this.baseURL}${path}`);
-        return response.json()
-    }
+        await delay(500)
 
+        const response = await fetch(`${this.baseURL}${path}`);
+
+        console.log(response)
+
+        if (response.ok) {
+            return response.json()
+        }
+
+        throw new Error(`${response.status} - ${response.statusText}`);
+    }
 }
 
 

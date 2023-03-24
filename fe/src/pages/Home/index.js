@@ -43,10 +43,12 @@ const Home = () => {
 
       try {
         setIsLoading(true)
+
         const listContacts = await ContactsService.listContacts(orderBy)
+
         setContacts(listContacts)
       } catch (error) {
-        console.log('error', error)
+        console.log('Catch: ', error)
       } finally {
         setIsLoading(false)
       }
