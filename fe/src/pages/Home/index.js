@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from "react";
 
 import {
   Container,
@@ -18,55 +18,52 @@ import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
 
 // Services
-import ContactsService from '../../services/ContactsService';
+import ContactsService from "../../services/ContactsService";
 
 const Home = () => {
-
   //States
-  const [contacts, setContacts] = useState([])
-  const [orderBy, setOrderBy] = useState('asc')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
+  const [contacts, setContacts] = useState([]);
+  const [orderBy, setOrderBy] = useState("asc");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredContacts = useMemo(() => contacts.filter((contact) => (
-    contact.name.toLocaleLowerCase()
-      .includes(searchTerm.toLocaleLowerCase())
-  ))
-    , [searchTerm, contacts])
-
-
+  const filteredContacts = useMemo(
+    () =>
+      contacts.filter((contact) =>
+        contact.name
+          .toLocaleLowerCase()
+          .includes(searchTerm.toLocaleLowerCase())
+      ),
+    [searchTerm, contacts]
+  );
 
   //Effects
   useEffect(() => {
-
     const loadContacts = async () => {
-
       try {
-        setIsLoading(true)
+        setIsLoading(true);
 
-        const listContacts = await ContactsService.listContacts(orderBy)
+        const listContacts = await ContactsService.listContacts(orderBy);
 
-        setContacts(listContacts)
+        setContacts(listContacts);
       } catch (error) {
-        console.log('Catch: ', error)
+        console.log("Catch: ", error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
     loadContacts();
-
-
-  }, [orderBy])
+  }, [orderBy]);
 
   //Functions
   const handleToggleOrderBy = () => {
-    setOrderBy((prevState) => prevState === 'asc' ? 'desc' : 'asc')
-  }
+    setOrderBy((prevState) => (prevState === "asc" ? "desc" : "asc"));
+  };
 
   const handleChangeSearchTerm = (event) => {
-    setSearchTerm(event.target.value)
-  }
+    setSearchTerm(event.target.value);
+  };
 
   return (
     <Container>
@@ -78,27 +75,28 @@ const Home = () => {
           type="text"
           value={searchTerm}
           onChange={handleChangeSearchTerm}
-          placeholder="Pesquisar contato..." />
+          placeholder="Pesquisar contato..."
+        />
       </InputSearchContainer>
 
       <Header>
-        <strong>{filteredContacts.length}
-          {filteredContacts.length === 1 ? ' contato' : ' contatos'}
+        <strong>
+          {filteredContacts.length}
+          {filteredContacts.length === 1 ? " contato" : " contatos"}
         </strong>
         <Link to="/new">Novo Contato</Link>
       </Header>
 
-      {filteredContacts.length > 0 &&
-
+      {filteredContacts.length > 0 && (
         <ListHeader orderBy={orderBy}>
           <button type="button" onClick={handleToggleOrderBy}>
             <span>Nome</span>
             <img src={arrow} alt="Sort" />
           </button>
-        </ListHeader>}
+        </ListHeader>
+      )}
 
       {filteredContacts.map(({ id, name, email, phone, category_name }) => (
-
         <Card key={id}>
           <div className="info">
             <div className="contact-name">
@@ -119,15 +117,9 @@ const Home = () => {
             </button>
           </div>
         </Card>
-
-      ))
-
-      }
-
+      ))}
     </Container>
   );
 };
-
-
 
 export default Home;
