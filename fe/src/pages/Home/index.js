@@ -8,6 +8,8 @@ import {
   InputSearchContainer,
 } from "./styles";
 
+import APIError from "../../errors/APIError";
+
 //import { delay } from '../../utils/delay';
 //Icons
 import editIcon from "../../assets/icons/editIcon.svg";
@@ -46,8 +48,11 @@ const Home = () => {
         const listContacts = await ContactsService.listContacts(orderBy);
 
         setContacts(listContacts);
+        throw new TypeError("TypeError");
       } catch (error) {
-        console.log("Catch: ", error);
+        console.log('Name:', error.name);
+        console.log('Message:', error.message);
+        console.log('Response:', error.response);
       } finally {
         setIsLoading(false);
       }
