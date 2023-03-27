@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 
 import {
   Container,
@@ -6,7 +6,7 @@ import {
   ListHeader,
   Card,
   InputSearchContainer,
-  ErrorContainer
+  ErrorContainer,
 } from "./styles";
 
 //Components
@@ -18,7 +18,7 @@ import Loader from "../../components/Loader";
 import editIcon from "../../assets/icons/editIcon.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import arrow from "../../assets/icons/arrow.svg";
-import sad from '../../assets/icons/sad.svg';
+import sad from "../../assets/icons/sad.svg";
 
 //React Router
 import { Link } from "react-router-dom";
@@ -33,7 +33,7 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState("");
 
   const filteredContacts = useMemo(
     () =>
@@ -45,26 +45,26 @@ const Home = () => {
     [searchTerm, contacts]
   );
 
-  const loadContacts = async () => {
+  const loadContacts = useCallback(async () => {
     try {
       setIsLoading(true);
 
       const listContacts = await ContactsService.listContacts(orderBy);
 
       setContacts(listContacts);
-
+      setHasError(false);
     } catch (error) {
-      setHasError(true)
-      setErrorMessage(error.message)
+      setHasError(true);
+      setErrorMessage(error.message);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [orderBy]);
 
   //Effects
   useEffect(() => {
     loadContacts();
-  }, [orderBy]);
+  }, [loadContacts]);
 
   //Functions
   const handleToggleOrderBy = () => {
@@ -77,7 +77,7 @@ const Home = () => {
 
   const handleTryAgain = () => {
     loadContacts();
-  }
+  };
   return (
     <Container>
       {/*  <Modal danger /> */}
@@ -93,12 +93,12 @@ const Home = () => {
       </InputSearchContainer>
 
       <Header hasError={hasError}>
-        {!hasError &&
+        {!hasError && (
           <strong>
             {filteredContacts.length}
             {filteredContacts.length === 1 ? " contato" : " contatos"}
           </strong>
-        }
+        )}
         <Link to="/new">Novo Contato</Link>
       </Header>
 
@@ -113,39 +113,41 @@ const Home = () => {
         </ErrorContainer>
       )}
 
+      {!hasError && (
+        <>
+          {filteredContacts.length > 0 && (
+            <ListHeader orderBy={orderBy}>
+              <button type="button" onClick={handleToggleOrderBy}>
+                <span>Nome</span>
+                <img src={arrow} alt="Sort" />
+              </button>
+            </ListHeader>
+          )}
 
+          {filteredContacts.map(({ id, name, email, phone, category_name }) => (
+            <Card key={id}>
+              <div className="info">
+                <div className="contact-name">
+                  <strong>{name}</strong>
+                  {category_name && <small>{category_name}</small>}
+                </div>
 
-      {filteredContacts.length > 0 && (
-        <ListHeader orderBy={orderBy}>
-          <button type="button" onClick={handleToggleOrderBy}>
-            <span>Nome</span>
-            <img src={arrow} alt="Sort" />
-          </button>
-        </ListHeader>
+                <span>{email}</span>
+                <span>{phone}</span>
+              </div>
+
+              <div className="actions">
+                <Link to={`/edit/${id}`}>
+                  <img src={editIcon} alt="Edit" />
+                </Link>
+                <button>
+                  <img src={deleteIcon} alt="Delete" />
+                </button>
+              </div>
+            </Card>
+          ))}
+        </>
       )}
-
-      {filteredContacts.map(({ id, name, email, phone, category_name }) => (
-        <Card key={id}>
-          <div className="info">
-            <div className="contact-name">
-              <strong>{name}</strong>
-              {category_name && <small>{category_name}</small>}
-            </div>
-
-            <span>{email}</span>
-            <span>{phone}</span>
-          </div>
-
-          <div className="actions">
-            <Link to={`/edit/${id}`}>
-              <img src={editIcon} alt="Edit" />
-            </Link>
-            <button>
-              <img src={deleteIcon} alt="Delete" />
-            </button>
-          </div>
-        </Card>
-      ))}
     </Container>
   );
 };
