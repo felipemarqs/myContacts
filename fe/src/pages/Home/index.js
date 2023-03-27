@@ -6,18 +6,22 @@ import {
   ListHeader,
   Card,
   InputSearchContainer,
+  ErrorContainer
 } from "./styles";
 
-import APIError from "../../errors/APIError";
+//Components
+import Button from "../../components/Button/Button";
+//import Modal from "../../components/Modal";
+import Loader from "../../components/Loader";
 
-//import { delay } from '../../utils/delay';
 //Icons
 import editIcon from "../../assets/icons/editIcon.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import arrow from "../../assets/icons/arrow.svg";
+import sad from '../../assets/icons/sad.svg';
+
+//React Router
 import { Link } from "react-router-dom";
-//import Modal from "../../components/Modal";
-import Loader from "../../components/Loader";
 
 // Services
 import ContactsService from "../../services/ContactsService";
@@ -28,6 +32,8 @@ const Home = () => {
   const [orderBy, setOrderBy] = useState("asc");
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('')
 
   const filteredContacts = useMemo(
     () =>
@@ -39,25 +45,24 @@ const Home = () => {
     [searchTerm, contacts]
   );
 
+  const loadContacts = async () => {
+    try {
+      setIsLoading(true);
+
+      const listContacts = await ContactsService.listContacts(orderBy);
+
+      setContacts(listContacts);
+
+    } catch (error) {
+      setHasError(true)
+      setErrorMessage(error.message)
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   //Effects
   useEffect(() => {
-    const loadContacts = async () => {
-      try {
-        setIsLoading(true);
-
-        const listContacts = await ContactsService.listContacts(orderBy);
-
-        setContacts(listContacts);
-        throw new TypeError("TypeError");
-      } catch (error) {
-        console.log('Name:', error.name);
-        console.log('Message:', error.message);
-        console.log('Response:', error.response);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     loadContacts();
   }, [orderBy]);
 
@@ -70,6 +75,9 @@ const Home = () => {
     setSearchTerm(event.target.value);
   };
 
+  const handleTryAgain = () => {
+    loadContacts();
+  }
   return (
     <Container>
       {/*  <Modal danger /> */}
@@ -84,13 +92,28 @@ const Home = () => {
         />
       </InputSearchContainer>
 
-      <Header>
-        <strong>
-          {filteredContacts.length}
-          {filteredContacts.length === 1 ? " contato" : " contatos"}
-        </strong>
+      <Header hasError={hasError}>
+        {!hasError &&
+          <strong>
+            {filteredContacts.length}
+            {filteredContacts.length === 1 ? " contato" : " contatos"}
+          </strong>
+        }
         <Link to="/new">Novo Contato</Link>
       </Header>
+
+      {hasError && (
+        <ErrorContainer>
+          <img src={sad} alt="Sad Icon" />
+          <div className="details">
+            <strong>Ocorreu um erro a obter os seus contatos</strong>
+            <small>{errorMessage}</small>
+            <Button onClick={handleTryAgain}>Tentar Novamente</Button>
+          </div>
+        </ErrorContainer>
+      )}
+
+
 
       {filteredContacts.length > 0 && (
         <ListHeader orderBy={orderBy}>
