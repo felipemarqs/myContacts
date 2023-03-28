@@ -53,7 +53,7 @@ const Home = () => {
       const listContacts = await ContactsService.listContacts(orderBy);
 
       setContacts(listContacts);
-      setContacts([])
+      //setContacts([])
       setHasError(false);
     } catch (error) {
       setHasError(true);

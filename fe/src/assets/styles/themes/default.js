@@ -1,16 +1,16 @@
-const defaultTheme ={
+const defaultTheme = {
   colors: {
-    background: " #F6F5FC",
+    background: "#F6F5FC",
     primary: {
-      100: "#dcdffe",
-      200: "#b9c0fe",
-      300: "#96a0fd",
-      400: "#7381fd",
-      500: "#5061fc",
-      600: "#404eca",
-      700: "#303a97",
-      800: "#202765",
-      900: "#101332",
+      100: "#d2e5e5",
+      200: "#a4caca",
+      300: "#77b0b0",
+      400: "#499595",
+      500: "#1c7b7b",
+      600: "#166262",
+      700: "#114a4a",
+      800: "#0b3131",
+      900: "#061919"
     },
     gray: {
       100: "#d3d3d3",
@@ -38,6 +38,7 @@ const defaultTheme ={
 };
 
 export default defaultTheme;
+
 
 
 

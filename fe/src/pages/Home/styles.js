@@ -42,7 +42,7 @@ export const Header = styled.header`
     color: ${({ theme }) => theme.colors.primary[500]};
     text-decoration: none;
     font-weight: bold;
-    border: 2px solid #5061fc;
+    border: 2px solid ${({ theme }) => theme.colors.primary[500]};
     padding: 8px 16px;
     border-radius: 4px;
     transition: all 0.4s ease-in;
