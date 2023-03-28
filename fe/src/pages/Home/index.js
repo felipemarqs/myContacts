@@ -7,6 +7,7 @@ import {
   Card,
   InputSearchContainer,
   ErrorContainer,
+  EmptyListContainer
 } from "./styles";
 
 //Components
@@ -48,12 +49,14 @@ const Home = () => {
 
   const loadContacts = useCallback(async () => {
     try {
+
+
+
       setIsLoading(true);
 
       const listContacts = await ContactsService.listContacts(orderBy);
-
       setContacts(listContacts);
-      //setContacts([])
+      setContacts([])
       setHasError(false);
     } catch (error) {
       setHasError(true);
@@ -129,12 +132,13 @@ const Home = () => {
 
       {!hasError && (
         <>
-          {contacts < 1 && (
-            <>
-              <div>
-                <img src={emptyBox} alt="Empty Box" />
-              </div>
-            </>
+
+          {(contacts < 1 && !isLoading) && (
+            <EmptyListContainer>
+
+              <img src={emptyBox} alt="Empty Box" />
+              <p>Você ainda não tem nenhum contato cadastrado! Clique no botão <strong>"Novo Contato"</strong> acima para cadastrar o seu primeiro!</p>
+            </EmptyListContainer>
           )}
 
           {filteredContacts.length > 0 && (
