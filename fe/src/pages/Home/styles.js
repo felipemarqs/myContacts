@@ -27,7 +27,7 @@ export const Container = styled.div`
 
 export const Header = styled.header`
   display: flex;
-  justify-content: ${({ hasError }) => hasError ? 'flex-end' : 'space-between'};
+  justify-content: ${({ justifyContent }) => justifyContent};
   align-items: center;
   margin-bottom: 8px;
   margin-top: 32px;

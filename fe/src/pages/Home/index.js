@@ -19,6 +19,7 @@ import editIcon from "../../assets/icons/editIcon.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import arrow from "../../assets/icons/arrow.svg";
 import sad from "../../assets/icons/sad.svg";
+import emptyBox from '../../assets/icons/emptyBox.svg'
 
 //React Router
 import { Link } from "react-router-dom";
@@ -52,6 +53,7 @@ const Home = () => {
       const listContacts = await ContactsService.listContacts(orderBy);
 
       setContacts(listContacts);
+      setContacts([])
       setHasError(false);
     } catch (error) {
       setHasError(true);
@@ -83,17 +85,27 @@ const Home = () => {
       {/*  <Modal danger /> */}
       <Loader isLoading={isLoading} />
 
-      <InputSearchContainer>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleChangeSearchTerm}
-          placeholder="Pesquisar contato..."
-        />
-      </InputSearchContainer>
 
-      <Header hasError={hasError}>
-        {!hasError && (
+
+      {contacts.length > 0 &&
+        <>
+          <InputSearchContainer>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleChangeSearchTerm}
+              placeholder="Pesquisar contato..."
+            />
+          </InputSearchContainer>
+        </>}
+
+      <Header justifyContent={
+        hasError
+          ? 'flex-end'
+          : (contacts.length > 0 ? 'space-between' : 'center')
+      }
+      >
+        {(!hasError && contacts.length > 0) && (
           <strong>
             {filteredContacts.length}
             {filteredContacts.length === 1 ? " contato" : " contatos"}
@@ -113,8 +125,18 @@ const Home = () => {
         </ErrorContainer>
       )}
 
+
+
       {!hasError && (
         <>
+          {contacts < 1 && (
+            <>
+              <div>
+                <img src={emptyBox} alt="Empty Box" />
+              </div>
+            </>
+          )}
+
           {filteredContacts.length > 0 && (
             <ListHeader orderBy={orderBy}>
               <button type="button" onClick={handleToggleOrderBy}>
