@@ -24,7 +24,7 @@ O layout da aplicação está disponível no Figma:
 
 ### Web
 
-<p align="center" style="display: flex; align-items: flex-start; justify-content: center;">
+<p align="center" style="display: flex;">
   <img src="./fe/src/assets/images/home.png"  width="400px"/>
 
   <img src="./fe/src/assets/images/noContacts.png"  width="400px"/>
