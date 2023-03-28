@@ -49,9 +49,6 @@ const Home = () => {
 
   const loadContacts = useCallback(async () => {
     try {
-
-
-
       setIsLoading(true);
 
       const listContacts = await ContactsService.listContacts(orderBy);
