@@ -17,6 +17,7 @@ import useErrors from "../../hooks/useErrors";
 //Utils
 import isEmailValid from "../../utils/isEmailValid";
 import formatPhone from "../../utils/formatPhone";
+import { delay } from "../../utils/delay";
 
 const ContactForm = ({ buttonLabel }) => {
   const [name, setName] = useState("");
@@ -26,23 +27,28 @@ const ContactForm = ({ buttonLabel }) => {
   const [categories, setCategories] = useState([])
   const [hasError, setHasError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
 
 
   const { setError, removeError, getErrorMessageByFildName, errors } =
     useErrors();
 
-  const isFormValid = (name && errors.length === 0);
+  const isFormValid = (name && errors.length === 0 && !hasError);
 
   useEffect(() => {
     const loadCategories = async () => {
       try {
+        await delay(3000)
         const categories = await CategoriesService.listCategories()
         setCategories(categories)
         setHasError(false)
+
       } catch (error) {
         setHasError(true)
         setErrorMessage(error.message)
-        console.log(error.message)
+        setError({ fieldName: "category", message: "Ocorreu um erro ao carregar as categorias." })
+      } finally {
+        setIsLoadingCategories(false)
       }
     }
 
@@ -83,66 +89,57 @@ const ContactForm = ({ buttonLabel }) => {
     setPhone(formatPhone(event.target.value));
   };
 
-  return (<>
-    {!hasError ? (
-      <>
-        <Form onSubmit={handleSubmit} noValidate>
-          <FormGroup error={getErrorMessageByFildName("name")}>
-            <Input
-              error={getErrorMessageByFildName("name")}
-              value={name}
-              placeholder="Nome"
-              onChange={handleNameChange}
-            />
-          </FormGroup>
+  return (
+    <Form onSubmit={handleSubmit} noValidate>
+      <FormGroup error={getErrorMessageByFildName("name")}>
+        <Input
+          error={getErrorMessageByFildName("name")}
+          value={name}
+          placeholder="Nome"
+          onChange={handleNameChange}
+        />
+      </FormGroup>
 
-          <FormGroup error={getErrorMessageByFildName("email")}>
-            <Input
-              type="email"
-              value={email}
-              placeholder="Email"
-              error={getErrorMessageByFildName("email")}
-              onChange={handleEmailChange}
-            />
-          </FormGroup>
+      <FormGroup error={getErrorMessageByFildName("email")}>
+        <Input
+          type="email"
+          value={email}
+          placeholder="Email"
+          error={getErrorMessageByFildName("email")}
+          onChange={handleEmailChange}
+        />
+      </FormGroup>
 
-          <FormGroup>
-            <Input
-              value={phone}
-              maxLength="15"
-              placeholder="Telefone"
-              onChange={handlePhoneChange}
-            />
-          </FormGroup>
+      <FormGroup>
+        <Input
+          value={phone}
+          maxLength="15"
+          placeholder="Telefone"
+          onChange={handlePhoneChange}
+        />
+      </FormGroup>
 
-          <FormGroup>
-            <Select
-              value={category}
-              onChange={(event) => setCategory(event.target.value)}
-            >
-              <option value="">Sem Categoria</option>
-              {categories.map(({ id, name }) => (
-                <option key={id} value={id}>
-                  {name}
-                </option>
-              ))
+      <FormGroup error={getErrorMessageByFildName("category")} isLoading={isLoadingCategories}>
+        <Select
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          disabled={isLoadingCategories}
+        >
+          <option value="">Sem Categoria</option>
+          {categories.map(({ id, name }) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </Select>
+      </FormGroup>
 
-              }
-            </Select>
-          </FormGroup>
-
-          <ButtonContainer>
-            <Button type="submit" disabled={!isFormValid}>
-              {buttonLabel}
-            </Button>
-          </ButtonContainer>
-        </Form>
-      </>
-    ) : (
-      <>
-        {errorMessage}
-      </>
-    )} </>
+      <ButtonContainer>
+        <Button type="submit" disabled={!isFormValid}>
+          {buttonLabel}
+        </Button>
+      </ButtonContainer>
+    </Form>
   );
 };
 export default ContactForm;
