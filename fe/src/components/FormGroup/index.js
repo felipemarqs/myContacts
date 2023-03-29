@@ -1,18 +1,21 @@
+import Spinner from "../Spinner";
 import { Container } from "./styles";
+
+import Loader from '../Loader'
 
 const FormGroup = ({ children, error, isLoading }) => {
   return (
-    <>
-      <Container>
-        <div className="form-item">
-          {children}
+    <Container>
 
-          {isLoading && (<div className="loader" />)}
-        </div>
-        {error && <small>{error}</small>}
+      <Loader isLoading />
+      <div className="form-item">
+        {children}
 
-      </Container>
-    </>
+        {isLoading && <Spinner />}
+      </div>
+      {error && <small>{error}</small>}
+
+    </Container>
   );
 };
 

@@ -1,0 +1,6 @@
+import { StyledSpinner } from "./styles";
+const Spinner = ({ size = 32 }) => {
+    return <StyledSpinner size={size} />
+}
+
+export default Spinner
