@@ -12,9 +12,13 @@ const NewContact = () => {
             category_id: formData.categoryId
         }
 
-        console.log(contact)
 
-        //const response = await ContactsService.createContact(contact)
+        try {
+            const response = await ContactsService.createContact(contact)
+        } catch (error) {
+            console.log(error.message)
+        }
+
     }
 
     return (
