@@ -1,20 +1,19 @@
 import Spinner from "../Spinner";
 import { Container } from "./styles";
 
-import Loader from '../Loader'
-
 const FormGroup = ({ children, error, isLoading }) => {
   return (
     <Container>
-
-      <Loader isLoading />
       <div className="form-item">
         {children}
 
-        {isLoading && <Spinner />}
+        {isLoading && (
+          <div className="loader">
+            <Spinner size={16} />
+          </div>
+        )}
       </div>
       {error && <small>{error}</small>}
-
     </Container>
   );
 };

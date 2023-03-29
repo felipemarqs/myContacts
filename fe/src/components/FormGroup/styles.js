@@ -15,5 +15,11 @@ export const Container = styled.div`
 
     .form-item {
             position: relative;
+
+            .loader {
+                position: absolute;
+                top:18px;
+                right: 16px;
+            }
     }
 `;

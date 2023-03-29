@@ -17,13 +17,13 @@ import useErrors from "../../hooks/useErrors";
 //Utils
 import isEmailValid from "../../utils/isEmailValid";
 import formatPhone from "../../utils/formatPhone";
-import { delay } from "../../utils/delay";
 
-const ContactForm = ({ buttonLabel }) => {
+const ContactForm = ({ buttonLabel, onSubmit }) => {
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState([])
   const [hasError, setHasError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -38,7 +38,6 @@ const ContactForm = ({ buttonLabel }) => {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        await delay(3000)
         const categories = await CategoriesService.listCategories()
         setCategories(categories)
         setHasError(false)
@@ -57,12 +56,12 @@ const ContactForm = ({ buttonLabel }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log({
+    onSubmit({
       name,
       email,
       phone,
-      category,
-    });
+      categoryId,
+    })
   };
 
   const handleNameChange = (event) => {
@@ -121,8 +120,8 @@ const ContactForm = ({ buttonLabel }) => {
 
       <FormGroup error={getErrorMessageByFildName("category")} isLoading={isLoadingCategories}>
         <Select
-          value={category}
-          onChange={(event) => setCategory(event.target.value)}
+          value={categoryId}
+          onChange={(event) => setCategoryId(event.target.value)}
           disabled={isLoadingCategories}
         >
           <option value="">Sem Categoria</option>
