@@ -7,7 +7,8 @@ import {
   Card,
   InputSearchContainer,
   ErrorContainer,
-  EmptyListContainer
+  EmptyListContainer,
+  SearchNotFoundContainer
 } from "./styles";
 
 //Components
@@ -21,6 +22,7 @@ import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import arrow from "../../assets/icons/arrow.svg";
 import sad from "../../assets/icons/sad.svg";
 import emptyBox from '../../assets/icons/emptyBox.svg'
+import magnifierQuestion from '../../assets/icons/magnifierQuestion.svg'
 
 //React Router
 import { Link } from "react-router-dom";
@@ -53,7 +55,7 @@ const Home = () => {
 
       const listContacts = await ContactsService.listContacts(orderBy);
       setContacts(listContacts);
-      setContacts([])
+      //setContacts([])
       setHasError(false);
     } catch (error) {
       setHasError(true);
@@ -132,11 +134,18 @@ const Home = () => {
 
           {(contacts < 1 && !isLoading) && (
             <EmptyListContainer>
-
               <img src={emptyBox} alt="Empty Box" />
               <p>Você ainda não tem nenhum contato cadastrado! Clique no botão <strong>"Novo Contato"</strong> acima para cadastrar o seu primeiro!</p>
             </EmptyListContainer>
           )}
+
+          {
+            (contacts.length > 0 && filteredContacts.length < 1) &&
+            (<SearchNotFoundContainer>
+              <img src={magnifierQuestion} alt="Icon" />
+              <p>Nenhum resultado foi encontrado para <strong>{searchTerm}</strong></p>
+            </SearchNotFoundContainer>)
+          }
 
           {filteredContacts.length > 0 && (
             <ListHeader orderBy={orderBy}>
