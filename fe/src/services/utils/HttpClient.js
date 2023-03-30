@@ -6,28 +6,40 @@ class HttpClient {
     this.baseURL = baseURL;
   }
 
-  async get(path) {
-    return this.makeRequest(path, { method: 'GET' })
-
+  async get(path, options) {
+    return this.makeRequest(path, {
+      method: 'GET',
+      headers: options?.headers,
+    })
   }
 
-  post(path, body) {
+  post(path, options) {
     return this.makeRequest(path, {
       method: 'POST',
-      body: body
+      body: options?.body,
+      headers: options?.headers,
     })
   }
 
   async makeRequest(path, options) {
-    const headers = new Headers({
-      'Content-Type': 'application/json'
-    })
+    const headers = new Headers()
+
+    if (options.body) {
+      headers.append('Content-Type', 'application/json')
+    }
+
+    if (options.headers) {
+      Object.keys(options.headers).forEach((name) => {
+        headers.append(name, options.headers[name])
+      })
+    }
 
     const response = await fetch(`${this.baseURL}${path}`, {
       method: options.method,
       body: JSON.stringify(options?.body),
       headers,
     })
+
 
 
 
