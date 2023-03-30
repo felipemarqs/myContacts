@@ -60,6 +60,7 @@ const Home = () => {
     } catch (error) {
       setHasError(true);
       setErrorMessage(error.message);
+      console.log(error)
     } finally {
       setIsLoading(false);
     }
