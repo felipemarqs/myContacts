@@ -11,7 +11,9 @@
 MyContacts - Um aplicativo para salvar e organizar seus contatos.
 
 Projeto desenvolvido durante o curso Jstack
+<p>
 O JStack é um curso de Node.js, React, React Native e TypeScript focado em te preparar para o mercado e ensinar de verdade como essas tecnologias funcionam.
+</p>
 
 ## 🎨 Layout
 
