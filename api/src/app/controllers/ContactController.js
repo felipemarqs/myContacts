@@ -1,5 +1,5 @@
 const ContactsRepository = require("../repositories/ContactRepositories");
-
+const isValidUUID = require("../utils/isValidUUID")
 class ContactController {
 
   async index(req, res) {
@@ -14,6 +14,10 @@ class ContactController {
     //Get one
 
     const { id } = req.params;
+
+    if (!isValidUUID(id)) {
+      return res.status(400).json({ error: 'Invalid user ID' })
+    }
 
     const contact = await ContactsRepository.findById(id);
 
@@ -32,6 +36,10 @@ class ContactController {
       return res.status(404).json({ error: "Name is required!" });
     }
 
+    if (category_id && !isValidUUID(category_id)) {
+      return res.status(400).json({ error: 'Invalid category ID' })
+    }
+
     const emailExists = await ContactsRepository.findByEmail(email);
 
     if (emailExists) {
@@ -42,7 +50,7 @@ class ContactController {
       name,
       email,
       phone,
-      category_id,
+      category_id: category_id || null,
     });
 
     res.status(201).json(contact);
@@ -54,15 +62,20 @@ class ContactController {
     const { id } = req.params;
     const { name, email, phone, category_id } = req.body;
 
+    if (!isValidUUID(id)) {
+      return res.status(400).json({ error: 'Invalid user ID' })
+    }
+
+    if (!name) {
+      return res.status(404).json({ error: "Name and email is required!" });
+    }
+
     const contactExists = await ContactsRepository.findById(id);
 
     if (!contactExists) {
       return res.status(404).json({ error: "Contact not found" });
     }
 
-    if (!name) {
-      return res.status(404).json({ error: "Name and email is required!" });
-    }
 
     const emailExists = await ContactsRepository.findByEmail(email);
 
@@ -74,7 +87,7 @@ class ContactController {
       name,
       email,
       phone,
-      category_id,
+      category_id: category_id || null,
     });
 
     res.json(contact);
@@ -84,6 +97,7 @@ class ContactController {
     //Delete
 
     const { id } = req.params;
+
 
     await ContactsRepository.delete(id);
 
