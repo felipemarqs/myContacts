@@ -12,7 +12,7 @@ import {
 } from "./styles";
 
 //Components
-import Button from "../../components/Button/Button";
+import Button from "../../components/Button";
 //import Modal from "../../components/Modal";
 import Loader from "../../components/Loader";
 

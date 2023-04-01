@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import FormGroup from "../FormGroup";
 import Input from "../Input/input";
 import Select from "../Select/Select";
-import Button from "../Button/Button";
+import Button from "../Button";
 import { Form, ButtonContainer } from "./styles";
 
 //Services
@@ -19,49 +19,55 @@ import isEmailValid from "../../utils/isEmailValid";
 import formatPhone from "../../utils/formatPhone";
 
 const ContactForm = ({ buttonLabel, onSubmit }) => {
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [categories, setCategories] = useState([])
-  const [hasError, setHasError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
-
+  const [categories, setCategories] = useState([]);
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { setError, removeError, getErrorMessageByFildName, errors } =
     useErrors();
 
-  const isFormValid = (name && errors.length === 0 && !hasError);
+  const isFormValid = name && errors.length === 0 && !hasError;
 
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const categories = await CategoriesService.listCategories()
-        setCategories(categories)
-        setHasError(false)
-
+        const categories = await CategoriesService.listCategories();
+        setCategories(categories);
+        setHasError(false);
       } catch (error) {
-        setHasError(true)
-        setErrorMessage(error.message)
-        setError({ fieldName: "category", message: "Ocorreu um erro ao carregar as categorias." })
+        setHasError(true);
+        setErrorMessage(error.message);
+        setError({
+          fieldName: "category",
+          message: "Ocorreu um erro ao carregar as categorias.",
+        });
       } finally {
-        setIsLoadingCategories(false)
+        setIsLoadingCategories(false);
       }
-    }
+    };
 
-    loadCategories()
-  }, [])
+    loadCategories();
+  }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    onSubmit({
+
+    setIsSubmitting(true);
+
+    await onSubmit({
       name,
       email,
       phone,
       categoryId,
-    })
+    });
+
+    setIsSubmitting(false);
   };
 
   const handleNameChange = (event) => {
@@ -96,6 +102,7 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
           value={name}
           placeholder="Nome"
           onChange={handleNameChange}
+          disabled={isSubmitting}
         />
       </FormGroup>
 
@@ -106,6 +113,7 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
           placeholder="Email"
           error={getErrorMessageByFildName("email")}
           onChange={handleEmailChange}
+          disabled={isSubmitting}
         />
       </FormGroup>
 
@@ -115,14 +123,18 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
           maxLength="15"
           placeholder="Telefone"
           onChange={handlePhoneChange}
+          disabled={isSubmitting}
         />
       </FormGroup>
 
-      <FormGroup error={getErrorMessageByFildName("category")} isLoading={isLoadingCategories}>
+      <FormGroup
+        error={getErrorMessageByFildName("category")}
+        isLoading={isLoadingCategories}
+      >
         <Select
           value={categoryId}
           onChange={(event) => setCategoryId(event.target.value)}
-          disabled={isLoadingCategories}
+          disabled={isLoadingCategories || isSubmitting}
         >
           <option value="">Sem Categoria</option>
           {categories.map(({ id, name }) => (
@@ -134,7 +146,7 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
       </FormGroup>
 
       <ButtonContainer>
-        <Button type="submit" disabled={!isFormValid}>
+        <Button type="submit" disabled={!isFormValid} isLoading={isSubmitting}>
           {buttonLabel}
         </Button>
       </ButtonContainer>

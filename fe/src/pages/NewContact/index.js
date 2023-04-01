@@ -5,6 +5,8 @@ import ContactsService from "../../services/ContactsService"
 const NewContact = () => {
 
     const handleSubmit = async (formData) => {
+
+        console.log("form data name",formData.name)
         const contact = {
             name: formData.name,
             email: formData.email,

@@ -1,5 +1,5 @@
 import APIError from "../../errors/APIError";
-
+import { delay } from "../../utils/delay";
 class HttpClient {
   constructor(baseURL) {
     this.baseURL = baseURL;
@@ -13,6 +13,7 @@ class HttpClient {
   }
 
   post(path, options) {
+    console.log(options);
     return this.makeRequest(path, {
       method: "POST",
       body: options?.body,
@@ -21,6 +22,7 @@ class HttpClient {
   }
 
   async makeRequest(path, options) {
+    await delay(5000);
     const headers = new Headers();
 
     if (options.body) {
@@ -41,7 +43,7 @@ class HttpClient {
 
     let responseBody = null;
 
-    console.log(response)
+    console.log(response);
     const contentType = response.headers.get("Content-Type");
 
     if (contentType.includes("application/json")) {
