@@ -1,42 +1,35 @@
-import PageHeader from "../../components/PageHeader"
-import ContactForm from "../../components/ContactForm"
-import ContactsService from "../../services/ContactsService"
+import PageHeader from "../../components/PageHeader";
+import ContactForm from "../../components/ContactForm";
+import ContactsService from "../../services/ContactsService";
+import toast from "../../services/utils/toast";
 
 const NewContact = () => {
+  const handleSubmit = async (formData) => {
+    console.log("form data name", formData.name);
 
-    const handleSubmit = async (formData) => {
+    try {
+      const contact = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        category_id: formData.categoryId,
+      };
 
-        console.log("form data name",formData.name)
-        const contact = {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            category_id: formData.categoryId
-        }
+      toast("success", "Contato cadastrado!");
 
-
-        try {
-            const response = await ContactsService.createContact(contact)
-        } catch (error) {
-            console.log(error.message)
-        }
-
+      await ContactsService.createContact(contact);
+    } catch (error) {
+      toast("error", "Ocorreu um erro ao cadastrar o contato!");
     }
+  };
 
-    return (
-        <>
-            <PageHeader
-                title="Novo Contato"
-                subtitle="Crie um novo contato"
-            />
+  return (
+    <>
+      <PageHeader title="Novo Contato" subtitle="Crie um novo contato" />
 
-            <ContactForm
-                buttonLabel="Cadastrar"
-                onSubmit={handleSubmit}
-            />
-        </>
-    )
-}
+      <ContactForm buttonLabel="Cadastrar" onSubmit={handleSubmit} />
+    </>
+  );
+};
 
-
-export default NewContact
+export default NewContact;

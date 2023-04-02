@@ -25,7 +25,6 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
   const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState([]);
   const [hasError, setHasError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -42,7 +41,6 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
         setHasError(false);
       } catch (error) {
         setHasError(true);
-        setErrorMessage(error.message);
         setError({
           fieldName: "category",
           message: "Ocorreu um erro ao carregar as categorias.",
@@ -68,6 +66,10 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
     });
 
     setIsSubmitting(false);
+    setName("")
+    setEmail("")
+    setPhone("")
+
   };
 
   const handleNameChange = (event) => {
