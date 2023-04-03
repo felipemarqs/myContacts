@@ -2,13 +2,13 @@ const CategoryRepository = require("../repositories/CategoriesRepositories");
 const isValidUUID = require("../utils/isValidUUID");
 
 class CategoryController {
-  //Show all categories
+  //Método para mostrar todas as categorias
   async index(req, res) {
-    const categories = await CategoryRepository.findAll();
+    const categories = await CategoryRepository.findAll(); 
     res.json(categories);
   }
 
-  //Create a category
+  //Método para criar uma categoria
   async store(req, res) {
     const { name } = req.body;
 
@@ -20,7 +20,7 @@ class CategoryController {
     res.json(category);
   }
 
-  //Show a category
+  //Método para pegar uma categoria
   async show(req, res) {
     const { id } = req.params;
 
@@ -36,7 +36,7 @@ class CategoryController {
     res.json(category);
   }
 
-  //Update a category
+  //Método para atualizar uma categoria
   async update(req, res) {
     const { id } = req.params;
     const { name } = req.body;
