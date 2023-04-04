@@ -20,6 +20,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor:pointer;
 
   //Background color
   ${({ type }) => containerVariants[type] || containerVariants.default}

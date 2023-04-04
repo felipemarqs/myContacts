@@ -65,10 +65,13 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
       categoryId,
     });
 
-    setIsSubmitting(false);
     setName("")
     setEmail("")
     setPhone("")
+    setCategoryId("")
+
+    setIsSubmitting(false);
+
 
   };
 

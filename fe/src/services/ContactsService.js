@@ -5,15 +5,18 @@ class ContactsService {
     this.HttpClient = new HttpClient("http://localhost:3001");
   }
 
-  async listContacts(orderBy = "asc") {
+  listContacts(orderBy = "asc") {
     return this.HttpClient.get(`/contacts?orderBy=${orderBy}`);
   }
 
-  async createContact(contact) {
-   console.log(contact)
+  createContact(contact) {
     return this.HttpClient.post("/contacts", {
       body: contact
     });
+  }
+
+  getContactById(contactId) {
+    return this.HttpClient.get(`/contacts/${contactId}`)
   }
 }
 
