@@ -10,7 +10,8 @@ const Modal = ({
     confirmLabel = 'Confirmar',
     onCancel,
     onConfirm,
-    visible
+    visible,
+    isLoading
 }) => {
 
     if (!visible) {
@@ -28,6 +29,7 @@ const Modal = ({
                             type="button"
                             className="cancelButton"
                             onClick={onCancel}
+                            disabled={isLoading}
                         >
                             {cancelLabel}
                         </button>
@@ -35,6 +37,7 @@ const Modal = ({
                             type="button"
                             danger={danger}
                             onClick={onConfirm}
+                            isLoading={isLoading}
                         >
                             {confirmLabel}
                         </Button>

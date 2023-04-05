@@ -34,7 +34,7 @@ class HttpClient {
     const contentType = response.headers.get("Content-Type");
 
     //Se o o tipo de conteúdo da resposta for em formato Json, fazemos o parse usando o metodo .json()
-    if (contentType.includes("application/json")) {
+    if (contentType?.includes("application/json")) {
       responseBody = await response.json();
     }
 
@@ -71,6 +71,13 @@ class HttpClient {
       body: options?.body,
       headers: options?.headers,
     });
+  }
+
+  delete(path, options) {
+    return this.makeRequest(path, {
+      method: 'DELETE',
+      headers: options?.headers,
+    })
   }
 }
 

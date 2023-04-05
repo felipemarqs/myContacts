@@ -30,6 +30,9 @@ import { Link } from "react-router-dom";
 // Services
 import ContactsService from "../../services/ContactsService";
 
+//Utils
+import toast from '../../utils/toast'
+
 const Home = () => {
   //States
   const [contacts, setContacts] = useState([]);
@@ -40,6 +43,7 @@ const Home = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
   const [contactBeingDeleted, setContactBeingDeleted] = useState(null)
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false)
 
   const filteredContacts = useMemo(
     () =>
@@ -93,6 +97,34 @@ const Home = () => {
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalVisible(false)
+    setContactBeingDeleted(null)
+  }
+
+  const handleConfirmDeleteContact = async () => {
+    try {
+      setIsLoadingDelete(true)
+      await ContactsService.deleteContact(contactBeingDeleted.id);
+
+      setContacts((prevState) => prevState.filter(
+        (contact) => contact.id !== contactBeingDeleted.id
+      ))
+
+      toast({
+        type: 'success',
+        text: 'Contato deletado com sucesso!'
+      })
+
+      handleCloseDeleteModal();
+
+
+    } catch (error) {
+      toast({
+        type: 'error',
+        text: 'Ocorreu um erro ao deletar o contato!'
+      })
+    } finally {
+      setIsLoadingDelete(false)
+    }
   }
   return (
     <Container>
@@ -103,7 +135,8 @@ const Home = () => {
         confirmLabel={"Deletar"}
         cancelLabel={"Cancelar"}
         onCancel={handleCloseDeleteModal}
-        onConfirm={() => alert('Confirmou')}
+        onConfirm={handleConfirmDeleteContact}
+        isLoading={isLoadingDelete}
       >
         <p>Essa ação não pode ser desfeita!</p>
       </Modal>
