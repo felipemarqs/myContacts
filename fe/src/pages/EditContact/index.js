@@ -1,6 +1,6 @@
 import PageHeader from "../../components/PageHeader"
 import ContactForm from "../../components/ContactForm"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import ContactsService from "../../services/ContactsService"
 import { useParams, useHistory } from "react-router-dom"
 import Loader
@@ -8,6 +8,9 @@ import Loader
 import toast from "../../utils/toast"
 const EditContact = () => {
     const [isLoading, setIsLoading] = useState(true)
+    const [contactName, setContactName] = useState('')
+
+    const contactFormRef = useRef(null)
 
     const history = useHistory();
 
@@ -17,11 +20,11 @@ const EditContact = () => {
         const loadContact = async () => {
 
             try {
-                const contactData = await ContactsService.getContactById(id)
+                const contact = await ContactsService.getContactById(id)
+                setContactName(contact.name)
+
+                contactFormRef.current.setFieldsValues(contact)
                 setIsLoading(false)
-                console.log(contactData)
-
-
             } catch (error) {
                 history.push('/')
                 toast({
@@ -35,15 +38,46 @@ const EditContact = () => {
     }, [])
 
 
-    const handleSubmit = (formData) => {
-        //
+    const handleSubmit = async (formData) => {
+        console.log("form data name", formData);
+
+        try {
+            const contact = {
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                category_id: formData.categoryId,
+            };
+
+            const updatedContact = await ContactsService.updateContact(id, contact);
+
+            setContactName(updatedContact.name)
+            toast(
+                {
+                    type: "success",
+                    text: "Contato editado!",
+                    duration: 20000
+                });
+        } catch (error) {
+            toast(
+                {
+                    type: "error",
+                    text: "Ocorreu um erro ao aditar o contato!"
+                }
+            );
+        }
+
     }
     return (
         <>
 
             <Loader isLoading={isLoading} />
-            <PageHeader title="Edite o contato" />
-            <ContactForm buttonLabel="Salvar alterações" onSubmit={handleSubmit} />
+            <PageHeader title={isLoading ? 'Carregando...' : `Editar ${contactName}`} />
+            <ContactForm
+                ref={contactFormRef}
+                buttonLabel="Salvar alterações"
+                onSubmit={handleSubmit}
+            />
         </>
     )
 }

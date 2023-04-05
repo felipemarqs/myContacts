@@ -14,7 +14,7 @@ class HttpClient {
     }
 
     if (options.headers) {  //Se o objeto enviado nas opções tiver cabeçalhos, adicionamos esses cabeçalhos no header instanciado
-      Object.entries(options.headers).forEach(([key, value]) => {  
+      Object.entries(options.headers).forEach(([key, value]) => {
         headers.append(key, value);
       });
     }
@@ -60,6 +60,14 @@ class HttpClient {
   post(path, options) {
     return this.makeRequest(path, {
       method: "POST",
+      body: options?.body,
+      headers: options?.headers,
+    });
+  }
+
+  put(path, options) {
+    return this.makeRequest(path, {
+      method: "PUT",
       body: options?.body,
       headers: options?.headers,
     });

@@ -5,7 +5,7 @@ export const StyledButton = styled.button`
   height: 52px;
   padding: 0 16px;
   border: none;
-  background: ${({ theme }) => theme.colors.primary[500]};
+  background: ${({ theme, danger }) => danger ? theme.colors.red[500] : theme.colors.primary[500]};
   font-size: 16px;
   font-weight: bold;
   color: #fff;

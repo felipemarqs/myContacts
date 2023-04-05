@@ -3,7 +3,11 @@ import ContactForm from "../../components/ContactForm";
 import ContactsService from "../../services/ContactsService";
 import toast from "../../utils/toast";
 
+import { useRef } from "react";
+
 const NewContact = () => {
+
+  const contactFormRef = useRef(null)
 
 
   const handleSubmit = async (formData) => {
@@ -18,11 +22,12 @@ const NewContact = () => {
       };
 
       await ContactsService.createContact(contact);
+
+      contactFormRef.current.resetFieldValues();
       toast(
         {
-          type: "default",
+          type: "success",
           text: "Contato cadastrado!",
-          duration: 20000
         });
     } catch (error) {
       toast(
@@ -38,7 +43,11 @@ const NewContact = () => {
     <>
       <PageHeader title="Novo Contato" subtitle="Crie um novo contato" />
 
-      <ContactForm buttonLabel="Cadastrar" onSubmit={handleSubmit} />
+      <ContactForm
+        ref={contactFormRef}
+        buttonLabel="Cadastrar"
+        onSubmit={handleSubmit}
+      />
     </>
   );
 };

@@ -13,7 +13,7 @@ import {
 
 //Components
 import Button from "../../components/Button";
-//import Modal from "../../components/Modal";
+import Modal from "../../components/Modal";
 import Loader from "../../components/Loader";
 
 //Icons
@@ -38,6 +38,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
+  const [contactBeingDeleted, setContactBeingDeleted] = useState(null)
 
   const filteredContacts = useMemo(
     () =>
@@ -83,9 +85,28 @@ const Home = () => {
   const handleTryAgain = () => {
     loadContacts();
   };
+
+  const handleDeleteContact = ({ id, name, email, phone, category_name }) => {
+    setIsDeleteModalVisible(true)
+    setContactBeingDeleted({ id, name, email, phone, category_name })
+  }
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalVisible(false)
+  }
   return (
     <Container>
-      {/*  <Modal danger /> */}
+      <Modal
+        danger
+        visible={isDeleteModalVisible}
+        title={`Tem certeza que deseja remover "${contactBeingDeleted?.name}"? `}
+        confirmLabel={"Deletar"}
+        cancelLabel={"Cancelar"}
+        onCancel={handleCloseDeleteModal}
+        onConfirm={() => alert('Confirmou')}
+      >
+        <p>Essa ação não pode ser desfeita!</p>
+      </Modal>
       <Loader isLoading={isLoading} />
 
 
@@ -173,7 +194,10 @@ const Home = () => {
                 <Link to={`/edit/${id}`}>
                   <img src={editIcon} alt="Edit" />
                 </Link>
-                <button>
+                <button
+                  onClick={() => handleDeleteContact({ id, name, email, phone, category_name })}
+
+                >
                   <img src={deleteIcon} alt="Delete" />
                 </button>
               </div>

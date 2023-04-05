@@ -1,5 +1,5 @@
 //React
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
 //Components
 import FormGroup from "../FormGroup";
@@ -18,7 +18,7 @@ import useErrors from "../../hooks/useErrors";
 import isEmailValid from "../../utils/isEmailValid";
 import formatPhone from "../../utils/formatPhone";
 
-const ContactForm = ({ buttonLabel, onSubmit }) => {
+const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -28,10 +28,41 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+
+
   const { setError, removeError, getErrorMessageByFildName, errors } =
     useErrors();
 
   const isFormValid = name && errors.length === 0 && !hasError;
+
+  useImperativeHandle(ref, () => {
+    return {
+      setFieldsValues: (contact) => {
+        setName(contact.name);
+        setEmail(contact.email ?? '')
+        setPhone(formatPhone(contact.phone))
+        setCategoryId(contact.category_id ?? '')
+      },
+      resetFieldValues: () => {
+        setName('');
+        setEmail('');
+        setPhone('');
+        setCategoryId('');
+      }
+    }
+  }, [])
+
+  /*   useEffect(() => {
+      const refObject = ref
+      refObject.current = {
+        setFieldsValues: (contact) => {
+          setName(contact.name);
+          setEmail(contact.email)
+          setPhone(contact.phone)
+          setCategoryId(contact.category_id)
+        }
+      }
+    }, [ref]) */
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -65,14 +96,7 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
       categoryId,
     });
 
-    setName("")
-    setEmail("")
-    setPhone("")
-    setCategoryId("")
-
     setIsSubmitting(false);
-
-
   };
 
   const handleNameChange = (event) => {
@@ -157,5 +181,6 @@ const ContactForm = ({ buttonLabel, onSubmit }) => {
       </ButtonContainer>
     </Form>
   );
-};
+});
+
 export default ContactForm;
