@@ -1,6 +1,9 @@
 //React
 import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
+
+
+
 //Components
 import FormGroup from "../FormGroup";
 import Input from "../Input/input";
@@ -13,6 +16,8 @@ import CategoriesService from "../../services/CategoriesService";
 
 //Hooks
 import useErrors from "../../hooks/useErrors";
+import useSafeAsyncState from "../../hooks/useSafeAsyncState";
+
 
 //Utils
 import isEmailValid from "../../utils/isEmailValid";
@@ -23,9 +28,9 @@ const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useSafeAsyncState([]);
   const [hasError, setHasError] = useState(false);
-  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [isLoadingCategories, setIsLoadingCategories] = useSafeAsyncState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
 
@@ -82,7 +87,7 @@ const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
     };
 
     loadCategories();
-  }, []);
+  }, [setCategories, setIsLoadingCategories]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
