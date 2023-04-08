@@ -3,8 +3,8 @@ import { Route, Switch, BrowserRouter } from "react-router-dom";
 //Pages
 import Home from "./pages/Home";
 import NewContact from "./pages/NewContact";
+//import { Container as EditContact } from "./pages/EditContact";
 import EditContact from "./pages/EditContact";
-
 const Routes = () => {
   return (
     <BrowserRouter>

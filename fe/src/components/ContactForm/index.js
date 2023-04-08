@@ -55,18 +55,6 @@ const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
     []
   );
 
-  /*   useEffect(() => {
-      const refObject = ref
-      refObject.current = {
-        setFieldsValues: (contact) => {
-          setName(contact.name);
-          setEmail(contact.email)
-          setPhone(contact.phone)
-          setCategoryId(contact.category_id)
-        }
-      }
-    }, [ref]) */
-
   useEffect(() => {
     const loadCategories = async () => {
       try {
