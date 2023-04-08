@@ -1,9 +1,6 @@
 //React
 import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
-
-
-
 //Components
 import FormGroup from "../FormGroup";
 import Input from "../Input/input";
@@ -16,8 +13,7 @@ import CategoriesService from "../../services/CategoriesService";
 
 //Hooks
 import useErrors from "../../hooks/useErrors";
-import useSafeAsyncState from "../../hooks/useSafeAsyncState";
-
+//import useSafeAsyncState from "../../hooks/useSafeAsyncState";
 
 //Utils
 import isEmailValid from "../../utils/isEmailValid";
@@ -28,34 +24,36 @@ const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [categories, setCategories] = useSafeAsyncState([]);
+  const [categories, setCategories] = useState([]);
   const [hasError, setHasError] = useState(false);
-  const [isLoadingCategories, setIsLoadingCategories] = useSafeAsyncState(true);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-
 
   const { setError, removeError, getErrorMessageByFildName, errors } =
     useErrors();
 
   const isFormValid = name && errors.length === 0 && !hasError;
 
-  useImperativeHandle(ref, () => {
-    return {
-      setFieldsValues: (contact) => {
-        setName(contact.name);
-        setEmail(contact.email ?? '')
-        setPhone(formatPhone(contact.phone))
-        setCategoryId(contact.category_id ?? '')
-      },
-      resetFieldValues: () => {
-        setName('');
-        setEmail('');
-        setPhone('');
-        setCategoryId('');
-      }
-    }
-  }, [])
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        setFieldsValues: (contact) => {
+          setName(contact.name);
+          setEmail(contact.email ?? "");
+          setPhone(formatPhone(contact.phone));
+          setCategoryId(contact.category.id ?? "");
+        },
+        resetFieldValues: () => {
+          setName("");
+          setEmail("");
+          setPhone("");
+          setCategoryId("");
+        },
+      };
+    },
+    []
+  );
 
   /*   useEffect(() => {
       const refObject = ref

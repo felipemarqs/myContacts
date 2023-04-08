@@ -6,36 +6,22 @@ import toast from "../../utils/toast";
 import { useRef } from "react";
 
 const NewContact = () => {
+  const contactFormRef = useRef(null);
 
-  const contactFormRef = useRef(null)
-
-
-  const handleSubmit = async (formData) => {
-    console.log("form data name", formData.name);
-
+  const handleSubmit = async (contact) => {
     try {
-      const contact = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        category_id: formData.categoryId,
-      };
-
       await ContactsService.createContact(contact);
 
       contactFormRef.current.resetFieldValues();
-      toast(
-        {
-          type: "success",
-          text: "Contato cadastrado!",
-        });
+      toast({
+        type: "success",
+        text: "Contato cadastrado!",
+      });
     } catch (error) {
-      toast(
-        {
-          type: "error",
-          text: "Ocorreu um erro ao cadastrar o usuário"
-        }
-      );
+      toast({
+        type: "error",
+        text: "Ocorreu um erro ao cadastrar o usuário",
+      });
     }
   };
 

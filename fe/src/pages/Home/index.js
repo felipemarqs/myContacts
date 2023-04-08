@@ -8,7 +8,7 @@ import {
   InputSearchContainer,
   ErrorContainer,
   EmptyListContainer,
-  SearchNotFoundContainer
+  SearchNotFoundContainer,
 } from "./styles";
 
 //Components
@@ -21,8 +21,8 @@ import editIcon from "../../assets/icons/editIcon.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import arrow from "../../assets/icons/arrow.svg";
 import sad from "../../assets/icons/sad.svg";
-import emptyBox from '../../assets/icons/emptyBox.svg'
-import magnifierQuestion from '../../assets/icons/magnifierQuestion.svg'
+import emptyBox from "../../assets/icons/emptyBox.svg";
+import magnifierQuestion from "../../assets/icons/magnifierQuestion.svg";
 
 //React Router
 import { Link } from "react-router-dom";
@@ -31,7 +31,7 @@ import { Link } from "react-router-dom";
 import ContactsService from "../../services/ContactsService";
 
 //Utils
-import toast from '../../utils/toast'
+import toast from "../../utils/toast";
 
 const Home = () => {
   //States
@@ -41,9 +41,9 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
-  const [contactBeingDeleted, setContactBeingDeleted] = useState(null)
-  const [isLoadingDelete, setIsLoadingDelete] = useState(false)
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [contactBeingDeleted, setContactBeingDeleted] = useState(null);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
   const filteredContacts = useMemo(
     () =>
@@ -60,13 +60,14 @@ const Home = () => {
       setIsLoading(true);
 
       const listContacts = await ContactsService.listContacts(orderBy);
+      console.log("List contacts", listContacts);
       setContacts(listContacts);
       //setContacts([])
       setHasError(false);
     } catch (error) {
       setHasError(true);
       setErrorMessage(error.message);
-      console.log(error)
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -90,42 +91,40 @@ const Home = () => {
     loadContacts();
   };
 
-  const handleDeleteContact = ({ id, name, email, phone, category_name }) => {
-    setIsDeleteModalVisible(true)
-    setContactBeingDeleted({ id, name, email, phone, category_name })
-  }
+  const handleDeleteContact = (contact) => {
+    setIsDeleteModalVisible(true);
+    setContactBeingDeleted(contact);
+  };
 
   const handleCloseDeleteModal = () => {
-    setIsDeleteModalVisible(false)
-    setContactBeingDeleted(null)
-  }
+    setIsDeleteModalVisible(false);
+    setContactBeingDeleted(null);
+  };
 
   const handleConfirmDeleteContact = async () => {
     try {
-      setIsLoadingDelete(true)
+      setIsLoadingDelete(true);
       await ContactsService.deleteContact(contactBeingDeleted.id);
 
-      setContacts((prevState) => prevState.filter(
-        (contact) => contact.id !== contactBeingDeleted.id
-      ))
+      setContacts((prevState) =>
+        prevState.filter((contact) => contact.id !== contactBeingDeleted.id)
+      );
 
       toast({
-        type: 'success',
-        text: 'Contato deletado com sucesso!'
-      })
+        type: "success",
+        text: "Contato deletado com sucesso!",
+      });
 
       handleCloseDeleteModal();
-
-
     } catch (error) {
       toast({
-        type: 'error',
-        text: 'Ocorreu um erro ao deletar o contato!'
-      })
+        type: "error",
+        text: "Ocorreu um erro ao deletar o contato!",
+      });
     } finally {
-      setIsLoadingDelete(false)
+      setIsLoadingDelete(false);
     }
-  }
+  };
   return (
     <Container>
       <Modal
@@ -142,9 +141,7 @@ const Home = () => {
       </Modal>
       <Loader isLoading={isLoading} />
 
-
-
-      {contacts.length > 0 &&
+      {contacts.length > 0 && (
         <>
           <InputSearchContainer>
             <input
@@ -154,15 +151,19 @@ const Home = () => {
               placeholder="Pesquisar contato..."
             />
           </InputSearchContainer>
-        </>}
+        </>
+      )}
 
-      <Header justifyContent={
-        hasError
-          ? 'flex-end'
-          : (contacts.length > 0 ? 'space-between' : 'center')
-      }
+      <Header
+        justifyContent={
+          hasError
+            ? "flex-end"
+            : contacts.length > 0
+            ? "space-between"
+            : "center"
+        }
       >
-        {(!hasError && contacts.length > 0) && (
+        {!hasError && contacts.length > 0 && (
           <strong>
             {filteredContacts.length}
             {filteredContacts.length === 1 ? " contato" : " contatos"}
@@ -182,25 +183,28 @@ const Home = () => {
         </ErrorContainer>
       )}
 
-
-
       {!hasError && (
         <>
-
-          {(contacts < 1 && !isLoading) && (
+          {contacts < 1 && !isLoading && (
             <EmptyListContainer>
               <img src={emptyBox} alt="Empty Box" />
-              <p>Você ainda não tem nenhum contato cadastrado! Clique no botão <strong>"Novo Contato"</strong> acima para cadastrar o seu primeiro!</p>
+              <p>
+                Você ainda não tem nenhum contato cadastrado! Clique no botão{" "}
+                <strong>"Novo Contato"</strong> acima para cadastrar o seu
+                primeiro!
+              </p>
             </EmptyListContainer>
           )}
 
-          {
-            (contacts.length > 0 && filteredContacts.length < 1) &&
-            (<SearchNotFoundContainer>
+          {contacts.length > 0 && filteredContacts.length < 1 && (
+            <SearchNotFoundContainer>
               <img src={magnifierQuestion} alt="Icon" />
-              <p>Nenhum resultado foi encontrado para <strong>{searchTerm}</strong></p>
-            </SearchNotFoundContainer>)
-          }
+              <p>
+                Nenhum resultado foi encontrado para{" "}
+                <strong>{searchTerm}</strong>
+              </p>
+            </SearchNotFoundContainer>
+          )}
 
           {filteredContacts.length > 0 && (
             <ListHeader orderBy={orderBy}>
@@ -211,26 +215,25 @@ const Home = () => {
             </ListHeader>
           )}
 
-          {filteredContacts.map(({ id, name, email, phone, category_name }) => (
-            <Card key={id}>
+          {filteredContacts.map((contact) => (
+            <Card key={contact.id}>
               <div className="info">
                 <div className="contact-name">
-                  <strong>{name}</strong>
-                  {category_name && <small>{category_name}</small>}
+                  <strong>{contact.name}</strong>
+                  {contact.category.name && (
+                    <small>{contact.category.name}</small>
+                  )}
                 </div>
 
-                <span>{email}</span>
-                <span>{phone}</span>
+                <span>{contact.email}</span>
+                <span>{contact.phone}</span>
               </div>
 
               <div className="actions">
-                <Link to={`/edit/${id}`}>
+                <Link to={`/edit/${contact.id}`}>
                   <img src={editIcon} alt="Edit" />
                 </Link>
-                <button
-                  onClick={() => handleDeleteContact({ id, name, email, phone, category_name })}
-
-                >
+                <button onClick={() => handleDeleteContact(contact)}>
                   <img src={deleteIcon} alt="Delete" />
                 </button>
               </div>
