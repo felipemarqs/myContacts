@@ -1,58 +1,12 @@
 import styled from "styled-components";
 
-export const InputSearchContainer = styled.form`
-  width: 100%;
- 
-  input {
-    width: 100%;
-    background: #fff;
-    border: none;
-    border-radius: 25px;
-    margin-top: 50px;
-    height: 50px;
-    box-shadow: 8px 4px 10px rgba(0, 0, 0, 0.14);
-    outline: 0;
-    padding: 0 16px;
 
-    &::placeholder {
-      color: #bcbcbc;
-    }
-  }
-`;
 
 export const Container = styled.div`
   margin-top: 32px;
 
 `;
 
-export const Header = styled.header`
-  display: flex;
-  justify-content: ${({ justifyContent }) => justifyContent};
-  align-items: center;
-  margin-bottom: 8px;
-  margin-top: 32px;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.gray[100]} ;
-  padding-bottom: 16px;
-  strong {
-    color: ${({ theme }) => theme.colors.gray[500]};
-    font-size: 24px;
-  }
-
-  a {
-    color: ${({ theme }) => theme.colors.primary[500]};
-    text-decoration: none;
-    font-weight: bold;
-    border: 2px solid ${({ theme }) => theme.colors.primary[500]};
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: all 0.4s ease-in;
-
-    &:hover {
-      background: ${({ theme }) => theme.colors.primary[500]};
-      color: #fff;
-    }
-  }
-`;
 
 export const ListHeader = styled.header`
   margin-top: 24px;
