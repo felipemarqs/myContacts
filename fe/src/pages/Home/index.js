@@ -13,7 +13,6 @@ import ContactList from "./components/ContactsList";
 //Hooks
 import useHome from "./useHome";
 
-
 const Home = () => {
   const {
     isDeleteModalVisible,
@@ -34,11 +33,15 @@ const Home = () => {
     handleTryAgain,
   } = useHome();
 
+  const hasContacts = !hasError && contacts.length > 0;
+  const isListEmpty = !hasError && !isLoading && !hasContacts;
+  const isSearchTermEmpty = !hasError && hasContacts && filteredContacts.length < 1;
+
   return (
     <Container>
       <Loader isLoading={isLoading} />
 
-      {contacts.length > 0 && (
+      {hasContacts && (
         <InputSearch value={searchTerm} onChange={handleChangeSearchTerm} />
       )}
 
@@ -55,14 +58,12 @@ const Home = () => {
         />
       )}
 
-      {!hasError && (
+      {isListEmpty && <EmptyList />}
+
+      {isSearchTermEmpty && <SearchNotFound searchTerm={searchTerm} />}
+
+      {hasContacts && (
         <>
-          {contacts < 1 && !isLoading && <EmptyList />}
-
-          {contacts.length > 0 && filteredContacts.length < 1 && (
-            <SearchNotFound searchTerm={searchTerm} />
-          )}
-
           <ContactList
             filteredContacts={filteredContacts}
             orderBy={orderBy}
