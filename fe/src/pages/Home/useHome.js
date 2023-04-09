@@ -117,8 +117,8 @@ const useHome = () => {
     handleToggleOrderBy,
     handleDeleteContact,
     errorMessage,
-    handleTryAgain
-  }
+    handleTryAgain,
+  };
 };
 
 export default useHome;
