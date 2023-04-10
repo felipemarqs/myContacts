@@ -1,7 +1,8 @@
+import { useEffect, useRef, useState } from "react";
 import Button from "../Button/index";
 import ReactPortal from "../ReactPortal";
 import { Overlay, Container, Footer } from "./styles";
-import ReactDOM from "react-dom";
+
 
 const Modal = ({
     danger,
@@ -15,7 +16,32 @@ const Modal = ({
     isLoading
 }) => {
 
-    if (!visible) {
+    const [shouldRender, setShouldRender] = useState(visible)
+
+    const overlayRef = useRef(null)
+
+    useEffect(() => {
+        if (visible) {
+            setShouldRender(true)
+        }
+
+        console.log(overlayRef.current)
+
+
+        if (!visible && overlayRef.current) {
+            /*    console.log("--------233121")
+               overlayRef.current.addEventListener('animationend', () => {
+                   
+               }
+               ); */
+            setShouldRender(false)
+
+        }
+
+
+    }, [visible])
+
+    if (!shouldRender) {
         return null
     }
 
@@ -23,8 +49,8 @@ const Modal = ({
 
     return (
         <ReactPortal containerId={'modal-root'}>
-            <Overlay>
-                <Container danger={danger}>
+            <Overlay isleaving={!visible} ref={overlayRef}>
+                <Container danger={danger} isleaving={!visible}>
                     <h1> {title}</h1>
                     {children}
                     <Footer>

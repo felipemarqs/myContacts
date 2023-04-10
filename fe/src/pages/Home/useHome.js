@@ -71,8 +71,8 @@ const useHome = () => {
   };
 
   const handleCloseDeleteModal = () => {
+    console.log("modal fechar")
     setIsDeleteModalVisible(false);
-    setContactBeingDeleted(null);
   };
 
   const handleConfirmDeleteContact = async () => {
