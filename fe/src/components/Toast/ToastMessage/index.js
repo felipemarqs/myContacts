@@ -4,7 +4,7 @@ import xCircle from "../../../assets/icons/xCircle.svg";
 import checkCircle from "../../../assets/icons/checkCircle.svg";
 import { useEffect } from "react";
 
-const ToastMessage = ({ text, type = "default", onRemoveMessage, id, duration }) => {
+const ToastMessage = ({ text, type = "default", onRemoveMessage, id, duration, isLeaving }) => {
 
   useEffect(() => {
 
@@ -25,7 +25,9 @@ const ToastMessage = ({ text, type = "default", onRemoveMessage, id, duration })
     <Container
       type={type}
       onClick={handleRemoveToast}
-      tabIndex={0} role="button"
+      tabIndex={0}
+      role="button"
+      isLeaving={isLeaving}
     >
       {type === "success" && <img src={checkCircle} />}
       {type === "error" && <img src={xCircle} />}

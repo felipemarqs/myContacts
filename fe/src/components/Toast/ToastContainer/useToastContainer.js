@@ -5,9 +5,8 @@ import { useState, useEffect, useCallback } from "react";
 import { toastEventManager } from "../../../utils/toast";
 
 const useToastContainer = () => {
-  const [messages, setMessages] = useState([
-    //{id: Math.random(), type: "default", text: 'Default text'},
-  ]);
+  const [messages, setMessages] = useState([]);
+
 
   useEffect(() => {
     const handleAddToast = ({ type, text, duration }) => {
@@ -30,7 +29,7 @@ const useToastContainer = () => {
 
   return {
     messages,
-    handleRemoveMessage,
+    handleRemoveMessage
   };
 };
 

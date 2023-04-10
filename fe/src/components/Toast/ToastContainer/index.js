@@ -16,6 +16,7 @@ const TotastContainer = () => {
           text={text}
           type={type}
           onRemoveMessage={handleRemoveMessage}
+
         />
       ))}
     </Container>
